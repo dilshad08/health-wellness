@@ -138,7 +138,7 @@ This project is **open-source** and available under the **MIT License**.
 
 For any issues, reach out at:  
 📧 **Email:** idilshadk@gmail.com
-🌐 **GitHub:** [dilshad08](https://github.com/your-username)
+🌐 **GitHub:** [Dilshad](https://github.com/dilshad08)
 
 ---
 
