@@ -1,16 +1,22 @@
-const moment = require('moment');
-const { addQueue } = require('../bull/queue');
-const { SCHEDULE_JOB_QUEUE } = require('./constant');
-
-exports.addDelayedJob = async (tDate, time, data) => {
-  const targetDateTime = moment(
-    `${tDate} ${time}`,
-    'YYYY-MM-DD HH:mm'
-  ).toDate();
-  const delay = targetDateTime.getTime() - Date.now();
-
-  if (delay <= 0) {
-    throw new Error('Target time is in the past.');
+exports.generateCronExpression = (day, time) => {
+  const daysOfWeek = {
+    sunday: 0,
+    monday: 1,
+    tuesday: 2,
+    wednesday: 3,
+    thursday: 4,
+    friday: 5,
+    saturday: 6,
+  };
+  const [hour, minute] = time.split(':').map(Number);
+  const dayOfWeek = daysOfWeek[day.toLowerCase()];
+  if (day) {
+    if (dayOfWeek === undefined) {
+      throw new Error(
+        'Invalid day name. Use full weekday name (e.g., "Monday").'
+      );
+    }
+    return `${minute} ${hour} * * ${dayOfWeek}`;
   }
-  await addQueue(SCHEDULE_JOB_QUEUE, 'oneTimeSchedule', data, null, delay);
+  return `${minute} ${hour} * * *`;
 };
