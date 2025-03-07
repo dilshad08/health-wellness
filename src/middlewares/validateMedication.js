@@ -1,0 +1,81 @@
+const Joi = require('joi');
+const { StatusCodes } = require('http-status-codes');
+
+// Custom validation for time format (HH:mm)
+const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
+
+// List of valid days for weekly scheduling
+const validDays = [
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+  'Sunday',
+];
+
+exports.validateAddMedicine = (req, res, next) => {
+  const schema = Joi.object({
+    name: Joi.string().min(3).max(50).required().messages({
+      'string.base': '"name" should be a string',
+      'string.empty': '"name" cannot be empty',
+      'string.min': '"name" must be at least 3 characters long',
+      'string.max': '"name" must be at most 50 characters long',
+      'any.required': '"name" is required',
+    }),
+    description: Joi.string().max(255).optional().messages({
+      'string.max': '"description" must be at most 255 characters long',
+    }),
+    scheduleType: Joi.string()
+      .valid('daily', 'weekly', 'one-time')
+      .required()
+      .messages({
+        'any.only':
+          '"scheduleType" must be either "daily", "weekly", or "one-time"',
+        'any.required': '"scheduleType" is required',
+      }),
+    time: Joi.string().pattern(timeRegex).required().messages({
+      'string.pattern.base': '"time" must be in HH:mm format (e.g., 14:30)',
+      'any.required': '"time" is required',
+    }),
+    dayOfWeek: Joi.alternatives().conditional('scheduleType', {
+      is: 'weekly',
+      then: Joi.array()
+        .items(Joi.string().valid(...validDays))
+        .min(1)
+        .required()
+        .messages({
+          'array.base': '"dayOfWeek" must be an array',
+          'array.min': '"dayOfWeek" must have at least one valid day',
+          'any.required': '"dayOfWeek" is required for weekly schedules',
+        }),
+      otherwise: Joi.forbidden(),
+    }),
+    startDate: Joi.date().iso().required().messages({
+      'date.base': '"startDate" must be a valid date',
+      'date.format': '"startDate" must be in YYYY-MM-DD format',
+      'any.required': '"startDate" is required',
+    }),
+    endDate: Joi.date()
+      .iso()
+      .greater(Joi.ref('startDate'))
+      .optional()
+      .messages({
+        'date.base': '"endDate" must be a valid date',
+        'date.format': '"endDate" must be in YYYY-MM-DD format',
+        'date.greater': '"endDate" must be after "startDate"',
+      }),
+  });
+
+  // Validate the request body
+  const { error } = schema.validate(req.body, { abortEarly: false });
+
+  if (error) {
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      success: false,
+      message: error.details.map((detail) => detail.message).join(', '),
+    });
+  }
+  next();
+};
