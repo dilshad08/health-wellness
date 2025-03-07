@@ -102,12 +102,9 @@ This will start:
 
 ### **Medication Management**
 
-| Method | Endpoint                           | Description                  |
-| ------ | ---------------------------------- | ---------------------------- |
-| POST   | `api/v1/medications/`              | Add new medication           |
-| GET    | `api/v1/medications/`              | Get all user medications     |
-| DELETE | `api/v1/medications/:id`           | Delete medication            |
-| POST   | `api/v1/medications/send-reminder` | Send reminder email manually |
+| Method | Endpoint              | Description        |
+| ------ | --------------------- | ------------------ |
+| POST   | `api/v1/medications/` | Add new medication |
 
 ---
 
