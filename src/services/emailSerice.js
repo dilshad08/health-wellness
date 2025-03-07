@@ -14,7 +14,7 @@ exports.sendEmail = async (email, subject, text, fileName, csvBuffer) => {
       from: process.env.SMTP_USER,
       to: email,
       subject,
-      text,
+      html: text,
     };
     if (fileName && csvBuffer) {
       const attachments = [{ filename: fileName, content: csvBuffer }];

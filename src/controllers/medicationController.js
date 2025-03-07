@@ -1,4 +1,5 @@
 const Medication = require('../models/Medication');
+const MedicationMetaData = require('../models/MedicineMetaData');
 const { StatusCodes } = require('http-status-codes');
 const { createMedicationSchedular } = require('../services/medication');
 const User = require('../models/User');
@@ -24,6 +25,23 @@ exports.createMedication = async (req, res, next) => {
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
+    next(error);
+  }
+};
+
+exports.updateMedicineStatus = async (req, res, next) => {
+  try {
+    const { id } = req.query;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new Error('Invalid mongoose id');
+    }
+    await MedicationMetaData.findByIdAndUpdate(
+      id,
+      { status: 'done' },
+      { new: true }
+    );
+    res.status(StatusCodes.OK).json({ message: 'Success' });
+  } catch (error) {
     next(error);
   }
 };

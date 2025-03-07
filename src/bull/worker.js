@@ -9,6 +9,12 @@ const { sendEmail } = require('../services/emailSerice');
 const MedicineMetaData = require('../models/MedicineMetaData');
 const { generateCSVBuffer } = require('../common/helper');
 const { addQueue } = require('./queue');
+const {
+  getMedicationEmailTemplate,
+} = require('../common/email-templates/medicationReminder');
+const {
+  getWeeklyReportEmailTemplate,
+} = require('../common/email-templates/weeklyReport');
 
 // Schedular Worker
 const schedularWorker = new Worker(
@@ -19,7 +25,7 @@ const schedularWorker = new Worker(
         JSON.stringify(job.data)
       )}`
     );
-    await MedicineMetaData.create({
+    const medicineMetaData = await MedicineMetaData.create({
       name: job.data.name,
       description: job.data.description,
       userId: job.data.userId,
@@ -32,7 +38,11 @@ const schedularWorker = new Worker(
     await sendEmail(
       job.data.userEmail,
       'Medicine Reminder',
-      `Hello, ${job.data.userName}, Please take your medicine on time, that is : ${job.data.name}`
+      getMedicationEmailTemplate(
+        job.data.userName,
+        job.data.name,
+        `${process.env.BASE_URL}/api/v1/medications/update?id=${medicineMetaData._id}`
+      )
     );
   },
   { connection: redisConnection }
@@ -77,7 +87,7 @@ const weeklyEmailWorker = new Worker(
     await sendEmail(
       job.data.email,
       'Health & Wellness | Weekly Report',
-      `Hello, ${job.data.name}, Please find the weekly report attached below`,
+      getWeeklyReportEmailTemplate(job.data.name),
       'report.csv',
       csvBuffer
     );

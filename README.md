@@ -103,9 +103,10 @@ This will start:
 
 ### **Medication Management**
 
-| Method | Endpoint              | Description        |
-| ------ | --------------------- | ------------------ |
-| POST   | `api/v1/medications/` | Add new medication |
+| Method | Endpoint                          | Description        |
+| ------ | --------------------------------- | ------------------ |
+| POST   | `api/v1/medications/`             | Add new medication |
+| GET    | `api/v1/medications/update?id=""` | Add new medication |
 
 ---
 

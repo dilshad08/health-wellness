@@ -29,7 +29,12 @@ const weeklyReportQueue = async () => {
     },
   ]);
   const transformedData = transformUsersWithMedicineMetaData(users);
-  await addQueue(WEEKLY_REPORT_QUEUE, 'generate-report', transformedData);
+  await addQueue(
+    WEEKLY_REPORT_QUEUE,
+    'generate-report',
+    transformedData,
+    '0 12 * * 0'
+  );
 };
 
 function transformUsersWithMedicineMetaData(users) {
