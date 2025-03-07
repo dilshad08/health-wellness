@@ -45,7 +45,7 @@ exports.login = async (req, res, next) => {
     await new Token({ userId: user._id, token }).save();
     delete user.password;
 
-    res.status(StatusCodes.OK).json({ token, data: user });
+    res.status(StatusCodes.OK).json({ token, user });
   } catch (error) {
     next(error);
   }

@@ -9,8 +9,14 @@ exports.createMedication = async (req, res, next) => {
   session.startTransaction();
   try {
     const medication = new Medication({ ...req.body, userId: req.userId });
+    const medicationData = JSON.parse(JSON.stringify(medication));
     const user = await User.findOne({ _id: req.userId }).lean();
-    await createMedicationSchedular({ ...req.body, userEmail: user.email });
+    await createMedicationSchedular({
+      ...medicationData,
+      userId: req.userId,
+      userEmail: user.email,
+      userName: user.name,
+    });
     await medication.save();
     await session.commitTransaction();
     session.endSession();

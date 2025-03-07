@@ -33,7 +33,6 @@ exports.createMedicationSchedular = async (data) => {
           data
         );
         break;
-
       default:
         break;
     }

@@ -93,12 +93,13 @@ This will start:
 
 ### **Authentication**
 
-| Method | Endpoint                 | Description                 |
-| ------ | ------------------------ | --------------------------- |
-| POST   | `api/v1/auth/register`   | Register a new user         |
-| POST   | `api/v1/auth/login`      | User login                  |
-| POST   | `api/v1/auth/logout`     | Logout from current session |
-| POST   | `api/v1/auth/logout-all` | Logout from all devices     |
+| Method | Endpoint                   | Description                 |
+| ------ | -------------------------- | --------------------------- |
+| POST   | `api/v1/auth/register`     | Register a new user         |
+| POST   | `api/v1/auth/login`        | User login                  |
+| POST   | `api/v1/auth/logout`       | Logout from current session |
+| POST   | `api/v1/auth/logout-all`   | Logout from all devices     |
+| POST   | `api/v1/auth/logout-other` | Logout from other devices   |
 
 ### **Medication Management**
 

@@ -1,3 +1,5 @@
+const { Parser } = require('json2csv');
+
 exports.generateCronExpression = (day, time) => {
   const daysOfWeek = {
     sunday: 0,
@@ -19,4 +21,19 @@ exports.generateCronExpression = (day, time) => {
     return `${minute} ${hour} * * ${dayOfWeek}`;
   }
   return `${minute} ${hour} * * *`;
+};
+
+exports.generateCSVBuffer = (data) => {
+  try {
+    const json2csvParser = new Parser();
+    const csv = json2csvParser.parse(data);
+    const buffer = Buffer.from(csv, 'utf-8');
+    return buffer;
+  } catch (error) {
+    console.error('Error generating CSV:', error);
+    throw error;
+  }
+};
+exports.formatDate = (dateString) => {
+  return new Date(dateString).toISOString().split('T')[0];
 };
