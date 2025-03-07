@@ -34,7 +34,7 @@ exports.addWeeklyScheduleJob = async (day, endDate, time, data) => {
   const cronExp = generateCronExpression(day, time);
   await addQueue(
     SCHEDULE_JOB_QUEUE,
-    'dailySchedule',
+    'weeklySchedule',
     data,
     cronExp,
     null,
