@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { DAY_OF_WEEK } = require('../common/constant');
 
 const MedicationSchema = new mongoose.Schema({
   userId: mongoose.Schema.Types.ObjectId,
@@ -8,15 +9,7 @@ const MedicationSchema = new mongoose.Schema({
   time: String,
   dayOfWeek: {
     type: String,
-    enum: [
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday',
-      'Sunday',
-    ],
+    enum: DAY_OF_WEEK,
   },
   startDate: Date,
   endDate: Date,

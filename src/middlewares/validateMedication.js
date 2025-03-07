@@ -4,17 +4,6 @@ const { StatusCodes } = require('http-status-codes');
 // Custom validation for time format (HH:mm)
 const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
 
-// List of valid days for weekly scheduling
-const validDays = [
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-  'Sunday',
-];
-
 exports.validateAddMedicine = (req, res, next) => {
   const schema = Joi.object({
     name: Joi.string().min(3).max(50).required().messages({
@@ -28,31 +17,34 @@ exports.validateAddMedicine = (req, res, next) => {
       'string.max': '"description" must be at most 255 characters long',
     }),
     scheduleType: Joi.string()
-      .valid('daily', 'weekly', 'one-time')
+      .valid('daily', 'weekly', 'onetime')
       .required()
       .messages({
         'any.only':
-          '"scheduleType" must be either "daily", "weekly", or "one-time"',
+          '"scheduleType" must be either "daily", "weekly", or "onetime"',
         'any.required': '"scheduleType" is required',
       }),
     time: Joi.string().pattern(timeRegex).required().messages({
       'string.pattern.base': '"time" must be in HH:mm format (e.g., 14:30)',
       'any.required': '"time" is required',
     }),
-    dayOfWeek: Joi.alternatives().conditional('scheduleType', {
-      is: 'weekly',
-      then: Joi.array()
-        .items(Joi.string().valid(...validDays))
-        .min(1)
-        .required()
-        .messages({
-          'array.base': '"dayOfWeek" must be an array',
-          'array.min': '"dayOfWeek" must have at least one valid day',
-          'any.required': '"dayOfWeek" is required for weekly schedules',
-        }),
-      otherwise: Joi.forbidden(),
-    }),
-    startDate: Joi.date().iso().required().messages({
+    dayOfWeek: Joi.string()
+      .valid(
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday',
+        'sunday'
+      )
+      .required()
+      .messages({
+        'any.only':
+          '"monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"',
+        'any.required': '"dayOfWeek" is required',
+      }),
+    startDate: Joi.date().iso().optional().messages({
       'date.base': '"startDate" must be a valid date',
       'date.format': '"startDate" must be in YYYY-MM-DD format',
       'any.required': '"startDate" is required',

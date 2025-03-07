@@ -1,5 +1,5 @@
 const express = require('express');
-const connectDB = require('./config/database');
+const { connectDB } = require('./config/database');
 const errorHandler = require('./middlewares/errorMiddleware');
 const helmet = require('helmet');
 const cors = require('cors');

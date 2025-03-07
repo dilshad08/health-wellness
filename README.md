@@ -23,8 +23,8 @@ This is a Node.js + Express backend for a Health & Wellbeing System that allows 
 ### **1. Clone the Repository**
 
 ```bash
-git clone https://github.com/dilshad08/health-backend.git
-cd health-backend
+git clone https://github.com/dilshad08/health-wellness.git
+cd health-wellness
 ```
 
 ### **2. Install Dependencies**

@@ -7,4 +7,15 @@ module.exports = {
   ONE_TIME: 'onetime',
   DAILY: 'daily',
   WEEKLY: 'weekly',
+
+  // Day of week
+  DAY_OF_WEEK: [
+    'monday',
+    'tuesday',
+    'wednesday',
+    'thursday',
+    'friday',
+    'saturday',
+    'sunday',
+  ],
 };
