@@ -139,9 +139,3 @@ This project is **open-source** and available under the **MIT License**.
 For any issues, reach out at:  
 📧 **Email:** idilshadk@gmail.com
 🌐 **GitHub:** [Dilshad](https://github.com/dilshad08)
-
----
-
-### 🚀 **Now your project is well-documented with clear setup instructions!**
-
-Let me know if you need modifications! 😊
